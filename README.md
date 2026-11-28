@@ -96,3 +96,5 @@ The script supports two loading modes:
 ## 📜 Ethical Considerations
 
 This research is intended for defensive security analysis and privacy protection. All experiments utilized publicly available research datasets (CelebA-HQ). We do not release pre-trained weights for specific individuals. Our methodology aims to inform the development of more robust biometric verification systems against generative threats.
+
+See [Defensive evaluation and reporting](docs/defensive-evaluation.md) for operating-point, data-split, and uncertainty reporting. The accompanying tool takes aggregate counts only and does not run the generation pipeline.
