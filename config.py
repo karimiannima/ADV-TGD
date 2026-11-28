@@ -1,3 +1,4 @@
+import os, json
 import torch
 from dataclasses import dataclass, field
 from typing import Tuple, Dict
@@ -10,6 +11,15 @@ THRESHOLDS = {
     'MobileFace': (0.183635, 0.301611, 0.380878),
 }
 
+# Optional override: thresholds calibrated on impostor pairs for THIS pipeline (see scripts/calibrate_thresholds.py).
+# The defaults above only fit FaceNet; ready-made files are in configs/.
+if os.environ.get("ADV_THRESH_JSON"):
+    with open(os.environ["ADV_THRESH_JSON"]) as f:
+        THRESHOLDS = {k: tuple(v) for k, v in json.load(f).items()}
+
+# Input resolution each FR model expects (square, pixels).
+FR_INPUT_SIZE = {'IR152': 112, 'IRSE50': 112, 'MobileFace': 112, 'ArcFace': 112, 'AdaFace': 112, 'FaceNet': 160}
+
 FACENET_TAU_1E3 = THRESHOLDS['IR152'][2]
 SUCCESS_FAR = 0.01
 _FAR_TO_INDEX = {0.1: 0, 0.01: 1, 0.001: 2}
@@ -19,15 +29,16 @@ SUCCESS_FAR_INDEX = _FAR_TO_INDEX.get(SUCCESS_FAR, 1)
 @dataclass
 class AdvTGDConfig:
     # --- Model & Env ---
-    model_id: str = "stabilityai/stable-diffusion-2-1"
+    model_id: str = "sd2-community/stable-diffusion-2-1"
     resolution: int = 768
     # Using field(default_factory=...) to prevent issues with torch init at import time
-    device: torch.device = field(default_factory=lambda: torch.device("cuda:1" if torch.cuda.is_available() else "cpu"))
+    device: torch.device = field(default_factory=lambda: torch.device("cuda:0" if torch.cuda.is_available() else "cpu"))
 
     # --- FR Models ---
-    train_ensemble_frs: Tuple[str, ...] = ('FaceNet', "IRSE50")
-    eval_frs: Tuple[str, ...] = ("IR152",)
-    ensemble_sample_k: int = 2
+    # env overrides (defaults unchanged): ADV_TRAIN_FRS="FaceNet,IRSE50,MobileFace" ADV_EVAL_FRS=IR152 ADV_K=3
+    train_ensemble_frs: Tuple[str, ...] = field(default_factory=lambda: tuple(os.environ.get("ADV_TRAIN_FRS", "FaceNet,IRSE50").split(",")))
+    eval_frs: Tuple[str, ...] = field(default_factory=lambda: tuple(os.environ.get("ADV_EVAL_FRS", "IR152").split(",")))
+    ensemble_sample_k: int = int(os.environ.get("ADV_K", "2"))
     hinge_far_level: float = 0.01
 
     # --- Masking & Alignment (SGSM Default) ---

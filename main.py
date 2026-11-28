@@ -15,7 +15,7 @@ from transformers import CLIPTokenizer, CLIPTextModel
 from peft import LoraConfig, get_peft_model
 
 # --- Local Modules ---
-from config import AdvTGDConfig, THRESHOLDS, FACENET_TAU_1E3
+from config import AdvTGDConfig, THRESHOLDS, FACENET_TAU_1E3, FR_INPUT_SIZE
 from face_processor import FaceProcessor, _top_percent_soft_mask, _ellipse_prior, _fr_target_saliency_from_src, \
     _normalize01, save_sgsm_visualization
 from losses import softmin_stack, tv_loss, eot_augs, check_finite, psnr, ssim_approx, get_hinge_threshold
@@ -68,11 +68,19 @@ def load_image_tensor(image_input, device: torch.device, size):
 
 
 def fr_size_from_name(name):
-    if name in ("IR152", "IRSE50", "MobileFace"): return 112
-    return 160
+    return FR_INPUT_SIZE.get(name, 160)
+
+
+# Centre-crop fraction of the aligned image fed to the FR models (1.0 = whole image, the original behaviour).
+# Tighter crops (about 0.7) match what the FR models were trained on; use thresholds calibrated for the same crop.
+FR_CROP = float(os.environ.get("ADV_FR_CROP", "1.0"))
 
 
 def prep_fr(x, size):
+    if FR_CROP < 1.0:
+        side = int(x.shape[-1] * FR_CROP)
+        off = (x.shape[-1] - side) // 2
+        x = x[:, :, off:off + side, off:off + side]
     return F.interpolate(x, size=(size, size), mode="bilinear", align_corners=False)
 
 
@@ -125,6 +133,7 @@ def train_one_pair(spec, base_out_dir, fr_ensemble, tokenizer, text_encoder,
                           lora_dropout=cfg.lora_dropout, bias="none")
     unet = get_peft_model(copy.deepcopy(unet_base), lora_cfg).to(cfg.device)
     unet.train()
+    unet.enable_gradient_checkpointing()  # same memory reason as the VAE; numerics unchanged
     trainable = [p for p in unet.parameters() if p.requires_grad]
     optimizer = torch.optim.AdamW(trainable, lr=cfg.lr)
 
@@ -545,7 +554,7 @@ def reevaluate_one_pair_ensemble(pair_info, fr_ensemble, fa_model, cfg: AdvTGDCo
 # ---------------- Pipeline Execution ----------------
 def run_adv_tgd(run_ablation=False):
     print(f"\n[INFO] Starting Adv-TGD Pipeline (Ablation Mode: {run_ablation})...")
-    RUN_ID = "ccs_eval"
+    RUN_ID = os.environ.get("ADV_RUN_ID", "ccs_eval")
     base_cfg = AdvTGDConfig()
 
     experiments = [
@@ -574,6 +583,7 @@ def run_adv_tgd(run_ablation=False):
         base_cfg.device).eval().requires_grad_(False)
     noise_scheduler = DDPMScheduler.from_pretrained(base_cfg.model_id, subfolder="scheduler")
     alphas_cumprod = noise_scheduler.alphas_cumprod.to(base_cfg.device)
+    vae.enable_gradient_checkpointing()  # backprop through the 768px VAE decode OOMs on 24-32 GB cards without it
 
     fa_model = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_D, flip_input=False, device=str(
         base_cfg.device)) if base_cfg.align_faces and face_alignment else None
@@ -587,7 +597,7 @@ def run_adv_tgd(run_ablation=False):
                      for n in base_cfg.eval_frs]
 
     print("[INFO] Building dataset pairs...")
-    manifest_path = "pairs_manifest_updated.json"
+    manifest_path = os.environ.get("ADV_MANIFEST", "pairs_manifest_updated.json")
     subset_specs = []
 
     if os.path.exists(manifest_path):

@@ -12,6 +12,36 @@ def setup_seed(seed):
     random.seed(seed)
 
 
+# CVLFace checkpoints (https://huggingface.co/minchul), fetched by scripts/fetch_cvlface.py; 112x112 RGB in [-1,1], 512-d output
+CVLFACE_DIRS = {'ArcFace': 'pretrained_model/arcface_ir101', 'AdaFace': 'pretrained_model/adaface_ir101'}
+
+
+def _load_cvlface(path):
+    # Same steps as the checkpoint's wrapper.py, minus transformers' PreTrainedModel (breaks on transformers >= 5)
+    import os, sys, yaml
+    from omegaconf import OmegaConf
+    path = os.path.abspath(path)
+    cwd = os.getcwd()
+    os.chdir(path)  # paths inside the checkpoint are relative to its own folder
+    sys.path.insert(0, path)
+    for k in [k for k in sys.modules if k == 'models' or k.startswith('models.')]:
+        del sys.modules[k]  # ArcFace and AdaFace both ship a package called 'models'
+    try:
+        try:
+            import fvcore.nn  # noqa: F401
+        except ImportError:  # AdaFace's model.py imports flop_count only for a FLOPs printout, not for inference
+            import types
+            fv = types.ModuleType('fvcore'); nn = types.ModuleType('fvcore.nn'); nn.flop_count = None
+            fv.nn = nn; sys.modules.update({'fvcore': fv, 'fvcore.nn': nn})
+        from models import get_model
+        model = get_model(OmegaConf.create(dict(yaml.safe_load(open('pretrained_model/model.yaml')))))
+        model.load_state_dict_from_path('pretrained_model/model.pt')
+        return model
+    finally:
+        os.chdir(cwd)
+        sys.path.remove(path)
+
+
 def get_fr_model(name, device=torch.device("cuda")):
     if name == 'IRSE50':
         model = IRSE_50()
@@ -25,6 +55,8 @@ def get_fr_model(name, device=torch.device("cuda")):
     elif name == 'FaceNet':
         model = InceptionResnetV1(num_classes=8631)
         model.load_state_dict(torch.load('pretrained_model/facenet.pth', map_location="cpu"))
+    elif name in CVLFACE_DIRS:
+        model = _load_cvlface(CVLFACE_DIRS[name])
     else:
         raise ValueError(f'Invalid model name: {name}')
     return model.to(device)

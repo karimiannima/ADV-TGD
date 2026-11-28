@@ -1,0 +1,154 @@
+{
+ "pairs": [
+  {
+   "pair_id": "091691__to__17",
+   "src_path": "assets/datasets/CelebA-HQ/091691.jpg",
+   "tgt_path": "celeba-hq_sample/target/17.jpg",
+   "text": "This woman has pointy nose, bangs, mouth slightly open. The woman is wearing lipstick, heavy makeup."
+  },
+  {
+   "pair_id": "129859__to__17108",
+   "src_path": "assets/datasets/CelebA-HQ/129859.jpg",
+   "tgt_path": "celeba-hq_sample/target/17108.jpg",
+   "text": "He is with bags under eyes, big nose, brown hair, big lips. He wears necktie."
+  },
+  {
+   "pair_id": "031506__to__1289",
+   "src_path": "assets/datasets/CelebA-HQ/031506.jpg",
+   "tgt_path": "celeba-hq_sample/target/1289.jpg",
+   "text": "She is with big nose, wavy hair, rosy cheeks, narrow eyes, arched eyebrows and is wearing necklace, lipstick."
+  },
+  {
+   "pair_id": "116166__to__085807",
+   "src_path": "assets/datasets/CelebA-HQ/116166.jpg",
+   "tgt_path": "assets/datasets/target/085807.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "044589__to__047073",
+   "src_path": "assets/datasets/CelebA-HQ/044589.jpg",
+   "tgt_path": "assets/datasets/test/047073.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "082097__to__17",
+   "src_path": "assets/datasets/CelebA-HQ/082097.jpg",
+   "tgt_path": "celeba-hq_sample/target/17.jpg",
+   "text": "This woman has pointy nose, bangs, mouth slightly open. The woman is wearing lipstick, heavy makeup."
+  },
+  {
+   "pair_id": "135087__to__17108",
+   "src_path": "assets/datasets/CelebA-HQ/135087.jpg",
+   "tgt_path": "celeba-hq_sample/target/17108.jpg",
+   "text": "He is with bags under eyes, big nose, brown hair, big lips. He wears necktie."
+  },
+  {
+   "pair_id": "103926__to__1289",
+   "src_path": "assets/datasets/CelebA-HQ/103926.jpg",
+   "tgt_path": "celeba-hq_sample/target/1289.jpg",
+   "text": "She is with big nose, wavy hair, rosy cheeks, narrow eyes, arched eyebrows and is wearing necklace, lipstick."
+  },
+  {
+   "pair_id": "023481__to__085807",
+   "src_path": "assets/datasets/CelebA-HQ/023481.jpg",
+   "tgt_path": "assets/datasets/target/085807.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "058242__to__047073",
+   "src_path": "assets/datasets/CelebA-HQ/058242.jpg",
+   "tgt_path": "assets/datasets/test/047073.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "197530__to__17",
+   "src_path": "assets/datasets/CelebA-HQ/197530.jpg",
+   "tgt_path": "celeba-hq_sample/target/17.jpg",
+   "text": "This woman has pointy nose, bangs, mouth slightly open. The woman is wearing lipstick, heavy makeup."
+  },
+  {
+   "pair_id": "082166__to__17108",
+   "src_path": "assets/datasets/CelebA-HQ/082166.jpg",
+   "tgt_path": "celeba-hq_sample/target/17108.jpg",
+   "text": "He is with bags under eyes, big nose, brown hair, big lips. He wears necktie."
+  },
+  {
+   "pair_id": "043488__to__1289",
+   "src_path": "assets/datasets/CelebA-HQ/043488.jpg",
+   "tgt_path": "celeba-hq_sample/target/1289.jpg",
+   "text": "She is with big nose, wavy hair, rosy cheeks, narrow eyes, arched eyebrows and is wearing necklace, lipstick."
+  },
+  {
+   "pair_id": "196840__to__085807",
+   "src_path": "assets/datasets/CelebA-HQ/196840.jpg",
+   "tgt_path": "assets/datasets/target/085807.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "074180__to__047073",
+   "src_path": "assets/datasets/CelebA-HQ/074180.jpg",
+   "tgt_path": "assets/datasets/test/047073.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "135057__to__17",
+   "src_path": "assets/datasets/CelebA-HQ/135057.jpg",
+   "tgt_path": "celeba-hq_sample/target/17.jpg",
+   "text": "This woman has pointy nose, bangs, mouth slightly open. The woman is wearing lipstick, heavy makeup."
+  },
+  {
+   "pair_id": "185859__to__17108",
+   "src_path": "assets/datasets/CelebA-HQ/185859.jpg",
+   "tgt_path": "celeba-hq_sample/target/17108.jpg",
+   "text": "He is with bags under eyes, big nose, brown hair, big lips. He wears necktie."
+  },
+  {
+   "pair_id": "146584__to__1289",
+   "src_path": "assets/datasets/CelebA-HQ/146584.jpg",
+   "tgt_path": "celeba-hq_sample/target/1289.jpg",
+   "text": "She is with big nose, wavy hair, rosy cheeks, narrow eyes, arched eyebrows and is wearing necklace, lipstick."
+  },
+  {
+   "pair_id": "061730__to__085807",
+   "src_path": "assets/datasets/CelebA-HQ/061730.jpg",
+   "tgt_path": "assets/datasets/target/085807.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "019987__to__047073",
+   "src_path": "assets/datasets/CelebA-HQ/019987.jpg",
+   "tgt_path": "assets/datasets/test/047073.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "104321__to__17",
+   "src_path": "assets/datasets/CelebA-HQ/104321.jpg",
+   "tgt_path": "celeba-hq_sample/target/17.jpg",
+   "text": "This woman has pointy nose, bangs, mouth slightly open. The woman is wearing lipstick, heavy makeup."
+  },
+  {
+   "pair_id": "152962__to__17108",
+   "src_path": "assets/datasets/CelebA-HQ/152962.jpg",
+   "tgt_path": "celeba-hq_sample/target/17108.jpg",
+   "text": "He is with bags under eyes, big nose, brown hair, big lips. He wears necktie."
+  },
+  {
+   "pair_id": "121115__to__1289",
+   "src_path": "assets/datasets/CelebA-HQ/121115.jpg",
+   "tgt_path": "celeba-hq_sample/target/1289.jpg",
+   "text": "She is with big nose, wavy hair, rosy cheeks, narrow eyes, arched eyebrows and is wearing necklace, lipstick."
+  },
+  {
+   "pair_id": "001138__to__085807",
+   "src_path": "assets/datasets/CelebA-HQ/001138.jpg",
+   "tgt_path": "assets/datasets/target/085807.jpg",
+   "text": "portrait photo"
+  },
+  {
+   "pair_id": "171342__to__047073",
+   "src_path": "assets/datasets/CelebA-HQ/171342.jpg",
+   "tgt_path": "assets/datasets/test/047073.jpg",
+   "text": "portrait photo"
+  }
+ ]
+}
