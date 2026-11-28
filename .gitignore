@@ -1,0 +1,12 @@
+# Local Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Local evaluation and model artifacts
+/outputs/
+/results/
+/pretrained_model/
+*.ckpt
+*.safetensors
